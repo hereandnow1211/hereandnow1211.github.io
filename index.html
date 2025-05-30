@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A repository of books available for download.">
-    <title>Library</title>
+    <title>Study Library</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -57,8 +57,8 @@
                     // Filter items for current path
                     const filteredData = data.filter(item => {
                         if (path === '') {
-                            // At root level, show only root items and first-level directories
-                            return item.path === '' || !item.path.includes('/');
+                            // At root level, show only directories
+                            return item.type === 'directory' && !item.path.includes('/');
                         }
                         // For subdirectories, show items that are in the current directory
                         return item.path === path || 
