@@ -16,7 +16,7 @@ def get_pdf_info(pdf_path, base_dir):
                 'size': f"{pdf_path.stat().st_size / (1024*1024):.1f} MB",
                 'pages': len(pdf.pages),
                 'path': str(rel_path.parent) if str(rel_path.parent) != '.' else '',
-                'url': f"pdfs/{rel_path}"
+                'url': str(rel_path)  # Use relative path for URL
             }
     except Exception as e:
         print(f"Error reading {pdf_path}: {str(e)}")

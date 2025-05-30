@@ -48,7 +48,7 @@
                         : window.location.href;
                     
                     // Fetch the PDF metadata
-                    const response = await fetch(`${baseUrl}/pdfs.json`);
+                    const response = await fetch('pdfs.json');
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
@@ -65,7 +65,8 @@
                     // Update the URLs to use the base URL
                     filteredData.forEach(item => {
                         if (item.type === 'file') {
-                            item.url = `${baseUrl}/${item.url}`;
+                            // Use relative URL for PDFs
+                            item.url = item.url;
                         }
                     });
 
