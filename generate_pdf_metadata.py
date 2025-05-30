@@ -10,13 +10,15 @@ def get_pdf_info(pdf_path, base_dir):
             pdf = PdfReader(file)
             # Get relative path from base directory
             rel_path = pdf_path.relative_to(base_dir)
+            # Ensure URL uses forward slashes and is relative to pdfs directory
+            url_path = str(rel_path).replace('\\', '/')
             return {
                 'name': pdf_path.name,
                 'type': 'file',
                 'size': f"{pdf_path.stat().st_size / (1024*1024):.1f} MB",
                 'pages': len(pdf.pages),
-                'path': str(rel_path.parent) if str(rel_path.parent) != '.' else '',
-                'url': str(rel_path)  # Use relative path for URL
+                'path': str(rel_path.parent).replace('\\', '/') if str(rel_path.parent) != '.' else '',
+                'url': url_path  # URL will be relative to pdfs directory
             }
     except Exception as e:
         print(f"Error reading {pdf_path}: {str(e)}")
@@ -25,10 +27,12 @@ def get_pdf_info(pdf_path, base_dir):
 def get_directory_info(dir_path, base_dir):
     """Get information about a directory."""
     rel_path = dir_path.relative_to(base_dir)
+    # Ensure path uses forward slashes
+    path_str = str(rel_path).replace('\\', '/')
     return {
         'name': dir_path.name,
         'type': 'directory',
-        'path': str(rel_path) if str(rel_path) != '.' else ''
+        'path': path_str if path_str != '.' else ''
     }
 
 def scan_directory(directory, base_dir=None):

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A repository of books available for download.">
-    <title>STUDY Library</title>
+    <title>Library</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -57,16 +57,20 @@
                     // Filter items for current path
                     const filteredData = data.filter(item => {
                         if (path === '') {
-                            return item.path === '';
+                            // At root level, show only root items and first-level directories
+                            return item.path === '' || !item.path.includes('/');
                         }
-                        return item.path === path;
+                        // For subdirectories, show items that are in the current directory
+                        return item.path === path || 
+                               (item.path.startsWith(path + '/') && 
+                                item.path.split('/').length === path.split('/').length + 1);
                     });
 
                     // Update the URLs to use the base URL
                     filteredData.forEach(item => {
                         if (item.type === 'file') {
-                            // Use relative URL for PDFs
-                            item.url = item.url;
+                            // Construct the full URL for PDFs
+                            item.url = `${baseUrl}/pdfs/${item.url}`;
                         }
                     });
 
