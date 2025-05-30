@@ -5,13 +5,53 @@
     "path": "AI"
   },
   {
+    "name": "AI.pdf",
+    "type": "file",
+    "size": "21.1 MB",
+    "pages": 1209,
+    "path": "AI",
+    "url": "AI/AI.pdf"
+  },
+  {
     "name": "Interviews",
     "type": "directory",
     "path": "Interviews"
   },
   {
+    "name": "INTERVIEWML2.pdf",
+    "type": "file",
+    "size": "3.2 MB",
+    "pages": 87,
+    "path": "Interviews",
+    "url": "Interviews/INTERVIEWML2.pdf"
+  },
+  {
+    "name": "INTERVIEWML3.pdf",
+    "type": "file",
+    "size": "12.2 MB",
+    "pages": 310,
+    "path": "Interviews",
+    "url": "Interviews/INTERVIEWML3.pdf"
+  },
+  {
     "name": "ML",
     "type": "directory",
     "path": "ML"
+  },
+  {
+    "name": "INTERVIEWML1.pdf",
+    "type": "file",
+    "size": "2.3 MB",
+    "pages": 135,
+    "path": "ML",
+    "url": "ML/INTERVIEWML1.pdf"
+  },
+  {
+    "name": "ML.pdf",
+    "type": "file",
+    "size": "17.5 MB",
+    "pages": 1134,
+    "path": "ML",
+    "url": "ML/ML.pdf"
   }
 ]

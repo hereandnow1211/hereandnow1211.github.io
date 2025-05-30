@@ -31,18 +31,24 @@ def get_directory_info(dir_path, base_dir):
         'path': str(rel_path) if str(rel_path) != '.' else ''
     }
 
-def scan_directory(directory):
+def scan_directory(directory, base_dir=None):
     """Scan directory recursively for PDFs and subdirectories."""
-    base_dir = Path(directory)
+    if base_dir is None:
+        base_dir = Path(directory)
+    base_dir = Path(base_dir)
+    current_dir = Path(directory)
     contents = []
     
     # First add directories
-    for item in sorted(base_dir.iterdir()):
+    for item in sorted(current_dir.iterdir()):
         if item.is_dir():
             contents.append(get_directory_info(item, base_dir))
+            # Recursively scan subdirectories, always passing the original base_dir
+            subdir_contents = scan_directory(item, base_dir)
+            contents.extend(subdir_contents)
     
-    # Then add PDF files
-    for item in sorted(base_dir.iterdir()):
+    # Then add PDF files in current directory
+    for item in sorted(current_dir.iterdir()):
         if item.is_file() and item.suffix.lower() == '.pdf':
             info = get_pdf_info(item, base_dir)
             if info:
@@ -58,7 +64,7 @@ def main():
         pdf_dir.mkdir()
     
     # Scan the directory recursively
-    contents = scan_directory(pdf_dir)
+    contents = scan_directory(pdf_dir, pdf_dir)
     
     # Write metadata to JSON file
     with open('pdfs.json', 'w') as f:
