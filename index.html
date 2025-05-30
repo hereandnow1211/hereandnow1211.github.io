@@ -42,15 +42,36 @@
 
             async loadContents(path) {
                 try {
-                    // Use relative path for pdfs.json
-                    const response = await fetch('pdfs.json');
+                    // Get the base URL for GitHub Pages
+                    const baseUrl = window.location.href.endsWith('/') 
+                        ? window.location.href.slice(0, -1) 
+                        : window.location.href;
+                    
+                    // Fetch the PDF metadata
+                    const response = await fetch(`${baseUrl}/pdfs.json`);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     const data = await response.json();
+                    
+                    // Filter items for current path
+                    const filteredData = data.filter(item => {
+                        if (path === '') {
+                            return item.path === '';
+                        }
+                        return item.path === path;
+                    });
+
+                    // Update the URLs to use the base URL
+                    filteredData.forEach(item => {
+                        if (item.type === 'file') {
+                            item.url = `${baseUrl}/${item.url}`;
+                        }
+                    });
+
                     this.currentPath = path;
                     this.updateBreadcrumbs(path);
-                    this.renderContents(data);
+                    this.renderContents(filteredData);
                 } catch (error) {
                     console.error('Error loading contents:', error);
                     this.showError('Failed to load contents. Please try again later.');
@@ -81,6 +102,16 @@
             renderContents(contents) {
                 const container = document.getElementById('fileList');
                 container.innerHTML = '';
+
+                if (contents.length === 0) {
+                    container.innerHTML = `
+                        <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">No items found!</strong>
+                            <span class="block sm:inline"> There are no files or folders in this directory.</span>
+                        </div>
+                    `;
+                    return;
+                }
 
                 // Sort directories first, then files
                 contents.sort((a, b) => {
